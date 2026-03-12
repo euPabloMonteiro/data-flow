@@ -1,4 +1,7 @@
 import { Worker } from "bullmq";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const worker = new Worker(
   "file-processing",
@@ -7,8 +10,8 @@ const worker = new Worker(
   },
   {
     connection: {
-      host: "localhost",
-      port: 6379,
+      host: process.env.REDIS_HOST,
+      port: Number(process.env.REDIS_PORT),
     },
   },
 );

@@ -1,5 +1,28 @@
+# dependencies
 node_modules
-dist
+
+# env
 .env
-.env.local
+
+# logs
+*.log
+logs
+
+# turborepo
 .turbo
+
+# builds
+dist
+build
+.out
+
+# prisma generated client
+packages/database/generated
+
+# OS
+.DS_Store
+Thumbs.db
+
+# temp
+*.tmp
+*.swp
