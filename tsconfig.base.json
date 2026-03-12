@@ -7,6 +7,10 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@dataflow/config": ["packages/config/src/env.ts"],
+      "@dataflow/database": ["packages/database/src/client.ts"]
+    }
   }
 }

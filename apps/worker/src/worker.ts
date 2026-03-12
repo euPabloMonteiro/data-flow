@@ -2,8 +2,7 @@ import "@dataflow/config";
 
 import { Worker } from "bullmq";
 import path from "path";
-import { csvParser } from "./lib/csvParser";
-import { salesSchema } from "./modules/fileProcessing/schemas/sales.schema";
+import { FileProcessingService } from "./modules/fileProcessing/services/fileProcessing.service";
 
 const worker = new Worker(
   "file-processing",
@@ -11,13 +10,10 @@ const worker = new Worker(
     console.log("Processing job", job.data);
 
     const filePath = path.resolve(__dirname, "../../api", job.data.path);
-    const rows = await csvParser(filePath);
+    const service = new FileProcessingService();
+    const result = await service.execute(filePath);
 
-    console.log("Rows parsed", rows.length);
-
-    const validateRows = rows.map((row) => salesSchema.parse(row));
-
-    console.log("Rows validated", validateRows.length);
+    console.log("Rows processed: ", result.processed);
   },
   {
     connection: {

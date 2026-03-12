@@ -12,3 +12,21 @@ model User {
   email     String   @unique
   createdAt DateTime @default(now())
 }
+
+model Sale {
+  id       String   @id @default(uuid())
+  date     DateTime
+  product  String
+  category String
+  price    Float
+  quantity Int
+  country  String
+  total    Float
+
+  createdAt DateTime @default(now())
+
+  @@index([date])
+  @@index([product])
+  @@index([category])
+  @@index([country])
+}
