@@ -26,3 +26,9 @@ Thumbs.db
 # temp
 *.tmp
 *.swp
+
+# directories
+uploads
+
+# csv fles
+*.csv
