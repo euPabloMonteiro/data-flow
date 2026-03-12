@@ -1,7 +1,6 @@
-import { Worker } from "bullmq";
-import dotenv from "dotenv";
+import "@dataflow/config";
 
-dotenv.config();
+import { Worker } from "bullmq";
 
 const worker = new Worker(
   "file-processing",
