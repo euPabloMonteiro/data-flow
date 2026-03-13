@@ -1,8 +1,8 @@
 import { prisma } from "@dataflow/database";
-import { SalesRowType } from "../schemas/sales.schema";
+import { SaleType } from "@dataflow/types";
 
 export class SaleRepository {
-  async createMany(rows: SalesRowType[]) {
+  async createMany(rows: SaleType[]) {
     const data = rows.map((row) => ({
       date: new Date(row.date),
       product: row.product,

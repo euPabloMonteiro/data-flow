@@ -1,5 +1,5 @@
 import { csvParser } from "../../../lib/csvParser";
-import { salesSchema } from "../schemas/sales.schema";
+import { saleSchema } from "@dataflow/types";
 import { SaleRepository } from "../repositories/sale.repository";
 
 export class FileProcessingService {
@@ -9,7 +9,7 @@ export class FileProcessingService {
     const rows = await csvParser(filePath);
 
     const validatedRows = rows.map((row) => {
-      return salesSchema.parse(row);
+      return saleSchema.parse(row);
     });
 
     await this.saleRepository.createMany(validatedRows);

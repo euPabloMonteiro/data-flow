@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const salesSchema = z.object({
+export const saleSchema = z.object({
   date: z.string(),
   product: z.string(),
   category: z.string(),
@@ -9,4 +9,4 @@ export const salesSchema = z.object({
   customer_country: z.string(),
 });
 
-export type SalesRowType = z.infer<typeof salesSchema>;
+export type SaleType = z.infer<typeof saleSchema>;

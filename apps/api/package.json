@@ -16,6 +16,7 @@
   "dependencies": {
     "@dataflow/config": "workspace:*",
     "@dataflow/database": "workspace:*",
+    "@dataflow/types": "workspace:*",
     "bullmq": "^5.71.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",

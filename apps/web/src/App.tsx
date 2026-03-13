@@ -1,11 +1,7 @@
-import { Button } from "@/components/ui/button"
+import { DashboardPage } from "@/pages/dashboard/DashboardPage";
 
 function App() {
-  return (
-    <div className="h-screen flex items-center justify-center">
-      <Button variant="outline">Upload CSV</Button>
-    </div>
-  )
+  return <DashboardPage />;
 }
 
-export default App
+export default App;
