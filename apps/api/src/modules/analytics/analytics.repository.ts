@@ -1,7 +1,7 @@
 import { prisma } from "@dataflow/database";
 
 export class AnalyticsRepository {
-  revenueByCountry() {
+  revenueByCountry(): Promise<any> {
     return prisma.sale.groupBy({
       by: ["country"],
       _sum: {
@@ -10,7 +10,7 @@ export class AnalyticsRepository {
     });
   }
 
-  topProducts() {
+  topProducts(): Promise<any> {
     return prisma.sale.groupBy({
       by: ["product"],
       _sum: {
@@ -25,7 +25,7 @@ export class AnalyticsRepository {
     });
   }
 
-  salesPerDay() {
+  salesPerDay(): Promise<any> {
     return prisma.sale.groupBy({
       by: ["date"],
       _sum: {
@@ -37,7 +37,7 @@ export class AnalyticsRepository {
     });
   }
 
-  categoryPerformance() {
+  categoryPerformance(): Promise<any> {
     return prisma.sale.groupBy({
       by: ["category"],
       _sum: {

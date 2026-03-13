@@ -2,8 +2,10 @@
   "name": "@dataflow/database",
   "version": "1.0.0",
   "description": "",
-  "main": "src/client.ts",
+  "main": "dist/client.js",
+  "types": "src/client.ts",
   "scripts": {
+    "build": "prisma generate && tsc -b",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio"

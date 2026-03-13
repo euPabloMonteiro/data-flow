@@ -1,4 +1,4 @@
-import "@dataflow/config";
+import { env } from "@dataflow/config";
 
 import express from "express";
 import cors from "cors";
@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use("/api", router);
 
-const PORT = process.env.PORT || 3333;
+const PORT = env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

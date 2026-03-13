@@ -3,7 +3,8 @@ import { UploadFileController } from "./modules/upload/upload.controller";
 import { AnalyticsController } from "./modules/analytics/analytics.controller";
 import { upload } from "./lib/multer";
 
-export const router = Router();
+export const router: Router = Router();
+
 const uploadController = new UploadFileController();
 const analyticsController = new AnalyticsController();
 

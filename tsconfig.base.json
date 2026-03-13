@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "CommonJS",
+    "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@dataflow/config": ["packages/config/src/env.ts"],
-      "@dataflow/database": ["packages/database/src/client.ts"],
-      "@dataflow/types": ["packages/types/src/index.ts"]
+      "@dataflow/config": ["packages/config/src"],
+      "@dataflow/database": ["packages/database/src"],
+      "@dataflow/types": ["packages/types/src"],
+      "@dataflow/logger": ["packages/logger/src"]
     }
   }
 }
