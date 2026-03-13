@@ -13,6 +13,7 @@
   "dependencies": {
     "@dataflow/config": "workspace:*",
     "@dataflow/database": "workspace:*",
+    "@dataflow/types": "workspace:*",
     "bullmq": "^5.71.0",
     "csv-parse": "^6.1.0",
     "ioredis": "^5.10.0",

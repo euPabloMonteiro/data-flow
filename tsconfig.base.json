@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "@dataflow/config": ["packages/config/src/env.ts"],
-      "@dataflow/database": ["packages/database/src/client.ts"]
+      "@dataflow/database": ["packages/database/src/client.ts"],
+      "@dataflow/types": ["packages/types/src/index.ts"]
     }
   }
 }
