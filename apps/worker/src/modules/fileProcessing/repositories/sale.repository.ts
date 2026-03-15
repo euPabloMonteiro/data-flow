@@ -3,6 +3,8 @@ import { SaleType } from "@dataflow/types";
 
 export class SaleRepository {
   async createMany(rows: SaleType[]) {
+    if (!rows.length) return;
+
     const data = rows.map((row) => ({
       date: new Date(row.date),
       product: row.product,

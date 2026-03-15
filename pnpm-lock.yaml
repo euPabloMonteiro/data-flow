@@ -210,6 +210,9 @@ importers:
 
   packages/queue:
     dependencies:
+      '@dataflow/config':
+        specifier: workspace:*
+        version: link:../config
       bullmq:
         specifier: 5.71.0
         version: 5.71.0
