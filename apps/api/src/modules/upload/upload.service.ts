@@ -1,14 +1,8 @@
-import { UploadQueue } from "./upload.queue";
+import { fileProcessingQueue } from "@dataflow/queue";
 
 export class UploadFileService {
-  private queue: UploadQueue;
-
-  constructor() {
-    this.queue = new UploadQueue();
-  }
-
   async execute(file: Express.Multer.File) {
-    const job = await this.queue.addFileProcessingJob({
+    const job = await fileProcessingQueue.add("fileProcessingJob", {
       filename: file.filename,
       path: file.path,
     });
