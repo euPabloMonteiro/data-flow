@@ -8,7 +8,8 @@
     { "path": "../../packages/types" },
     { "path": "../../packages/config" },
     { "path": "../../packages/database" },
-    { "path": "../../packages/logger" }
+    { "path": "../../packages/logger" },
+    { "path": "../../packages/queue" }
   ],
   "include": ["src"]
 }

@@ -26,12 +26,12 @@ importers:
       '@dataflow/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@dataflow/queue':
+        specifier: workspace:*
+        version: link:../../packages/queue
       '@dataflow/types':
         specifier: workspace:*
         version: link:../../packages/types
-      bullmq:
-        specifier: ^5.71.0
-        version: 5.71.0
       cors:
         specifier: ^2.8.6
         version: 2.8.6
@@ -151,18 +151,15 @@ importers:
       '@dataflow/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@dataflow/queue':
+        specifier: workspace:*
+        version: link:../../packages/queue
       '@dataflow/types':
         specifier: workspace:*
         version: link:../../packages/types
-      bullmq:
-        specifier: ^5.71.0
-        version: 5.71.0
       csv-parse:
         specifier: ^6.1.0
         version: 6.1.0
-      ioredis:
-        specifier: ^5.10.0
-        version: 5.10.0
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -210,6 +207,15 @@ importers:
         version: 4.21.0
 
   packages/logger: {}
+
+  packages/queue:
+    dependencies:
+      bullmq:
+        specifier: 5.71.0
+        version: 5.71.0
+      ioredis:
+        specifier: 5.9.3
+        version: 5.9.3
 
   packages/types:
     dependencies:
@@ -671,9 +677,6 @@ packages:
 
   '@ioredis/commands@1.5.0':
     resolution: {integrity: sha512-eUgLqrMf8nJkZxT24JvVRrQya1vZkQh8BBeYNwGDqa5I0VUi8ACx7uFvAaLxintokpTenkK6DASvo/bvNbBGow==}
-
-  '@ioredis/commands@1.5.1':
-    resolution: {integrity: sha512-JH8ZL/ywcJyR9MmJ5BNqZllXNZQqQbnVZOqpPQqE1vHiFgAw4NHbvE0FOduNU8IX9babitBT46571OnPTT0Zcw==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2823,10 +2826,6 @@ packages:
     resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
     engines: {node: '>=12'}
 
-  ioredis@5.10.0:
-    resolution: {integrity: sha512-HVBe9OFuqs+Z6n64q09PQvP1/R4Bm+30PAyyD4wIEqssh3v9L21QjCVk4kRLucMBcDokJTcLjsGeVRlq/nH6DA==}
-    engines: {node: '>=12.22.0'}
-
   ioredis@5.9.3:
     resolution: {integrity: sha512-VI5tMCdeoxZWU5vjHWsiE/Su76JGhBvWF1MJnV9ZtGltHk9BmD48oDq8Tj8haZ85aceXZMxLNDQZRVo5QKNgXA==}
     engines: {node: '>=12.22.0'}
@@ -4610,8 +4609,6 @@ snapshots:
       '@types/node': 24.12.0
 
   '@ioredis/commands@1.5.0': {}
-
-  '@ioredis/commands@1.5.1': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -6822,20 +6819,6 @@ snapshots:
   inherits@2.0.4: {}
 
   internmap@2.0.3: {}
-
-  ioredis@5.10.0:
-    dependencies:
-      '@ioredis/commands': 1.5.1
-      cluster-key-slot: 1.1.2
-      debug: 4.4.3
-      denque: 2.1.0
-      lodash.defaults: 4.2.0
-      lodash.isarguments: 3.1.0
-      redis-errors: 1.2.0
-      redis-parser: 3.0.0
-      standard-as-callback: 2.1.0
-    transitivePeerDependencies:
-      - supports-color
 
   ioredis@5.9.3:
     dependencies:

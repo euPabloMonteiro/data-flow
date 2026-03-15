@@ -1,12 +1,15 @@
-import { env } from "@dataflow/config";
-
-import { Worker } from "bullmq";
-import path from "path";
+import {
+  redisConnection,
+  Worker,
+  Job,
+  FileProcessingJob,
+} from "@dataflow/queue";
 import { FileProcessingService } from "./modules/fileProcessing/services/fileProcessing.service";
+import path from "path";
 
-const worker = new Worker(
+const worker = new Worker<FileProcessingJob>(
   "file-processing",
-  async (job) => {
+  async (job: Job<FileProcessingJob>) => {
     console.log("Processing job", job.data);
 
     const filePath = path.resolve(__dirname, "../../api", job.data.path);
@@ -17,10 +20,7 @@ const worker = new Worker(
     console.log("Rows processed: ", result.processed);
   },
   {
-    connection: {
-      host: env.REDIS_HOST,
-      port: env.REDIS_PORT,
-    },
+    connection: redisConnection,
   },
 );
 
