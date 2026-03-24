@@ -1,10 +1,11 @@
 import { getRedis, Worker, Job, FileProcessingJob } from "@dataflow/queue";
-import { logger } from "@dataflow/logger";
+import { createLogger } from "@dataflow/logger";
 import { UploadStatus } from "@dataflow/database";
 
 import { FileProcessingService } from "./modules/fileProcessing/services/fileProcessing.service";
 import { UploadRepository } from "./modules/fileProcessing/repositories/upload.repository";
 
+const logger = createLogger("worker");
 const uploadRepository = new UploadRepository();
 
 const worker = new Worker<FileProcessingJob>(
