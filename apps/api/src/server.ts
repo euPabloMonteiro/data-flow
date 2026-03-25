@@ -1,15 +1,24 @@
-import { app } from "./app";
-import { env, validateEnv } from "@dataflow/config";
-import { connectDb } from "@dataflow/database";
-import { connectRedis } from "@dataflow/queue";
+import { connectDb, initializeDatabase } from "@dataflow/database";
+import { connectRedis, initializeRedisConnection } from "@dataflow/queue";
 import { createLogger } from "@dataflow/logger";
+import { env } from "./env";
 
-const logger = createLogger("api-gateway");
+const logger = createLogger("api-gateway", {
+  nodeEnv: env.NODE_ENV,
+  logLevel: env.LOG_LEVEL,
+});
 
 async function bootstrap() {
   try {
-    logger.info("Step 1: Validating environment variables...");
-    validateEnv();
+    logger.info("Step 1: Initializing dependencies...");
+    initializeDatabase({
+      databaseUrl: env.DATABASE_URL,
+      nodeEnv: env.NODE_ENV,
+    });
+    initializeRedisConnection({
+      host: env.REDIS_HOST,
+      port: env.REDIS_PORT,
+    });
 
     logger.info("Step 2: Checking Infrastructure (Postgres & Redis)");
 
@@ -18,6 +27,7 @@ async function bootstrap() {
       connectRedis().then(() => logger.info("✅ Redis Connected")),
     ]);
 
+    const { app } = await import("./app");
     const PORT = env.PORT;
 
     app.listen(PORT, () => {

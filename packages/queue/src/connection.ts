@@ -1,13 +1,32 @@
-import { env } from "@dataflow/config";
 import IORedis from "ioredis";
 
+type RedisConfig = {
+  host: string;
+  port: number;
+};
+
 let redis: IORedis | null = null;
+let redisConfig: RedisConfig | null = null;
+
+export function initializeRedisConnection(config: RedisConfig) {
+  redisConfig = config;
+}
+
+function getRedisConfig() {
+  if (!redisConfig) {
+    throw new Error("Redis config was not initialized");
+  }
+
+  return redisConfig;
+}
 
 export function getRedis() {
+  const config = getRedisConfig();
+
   if (!redis) {
     redis = new IORedis({
-      host: env.REDIS_HOST,
-      port: env.REDIS_PORT,
+      host: config.host,
+      port: config.port,
       maxRetriesPerRequest: null,
       retryStrategy: (times) => {
         if (times > 5) {

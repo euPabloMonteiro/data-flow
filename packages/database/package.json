@@ -27,7 +27,6 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@dataflow/config": "workspace:*",
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "@prisma/config": "^7.5.0",

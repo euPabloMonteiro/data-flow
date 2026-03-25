@@ -1,6 +1,6 @@
-import { validateEnv } from "../packages/config/src/env";
 import { execSync, spawn } from "child_process";
 import waitOn from "wait-on";
+import { validateEnv } from "./env";
 
 async function bootstrap() {
   console.clear();

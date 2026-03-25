@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
-import { env } from "@dataflow/config";
 import { AppError } from "../../errors/AppError";
+import { env } from "../../env";
 
 export class AuthController {
   constructor(private authService = new AuthService()) {}

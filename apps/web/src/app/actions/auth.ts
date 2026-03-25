@@ -1,12 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { env } from "@dataflow/config";
+import { env } from "../../env";
 
 export async function loginWithGithub() {
-  const clientId = env.GITHUB_CLIENT_ID;
+  const clientId = env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
   if (!clientId) {
-    throw new Error("GITHUB_CLIENT_ID is not configured");
+    throw new Error("NEXT_PUBLIC_GITHUB_CLIENT_ID is not configured");
   }
 
   const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user:email`;
@@ -14,8 +14,8 @@ export async function loginWithGithub() {
 }
 
 export async function loginWithGoogle() {
-  const clientId = env.GOOGLE_CLIENT_ID;
-  const redirectUri = env.GOOGLE_REDIRECT_URI_CALLBACK;
+  const clientId = env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  const redirectUri = env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI_CALLBACK;
 
   if (!clientId || !redirectUri) {
     throw new Error("Google OAuth environment variables are not configured");

@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { router } from "./routes";
-import { env } from "@dataflow/config";
+import { env } from "./env";
 
 const app = express();
 

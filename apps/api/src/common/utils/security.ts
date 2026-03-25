@@ -1,6 +1,6 @@
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
-import { env } from "@dataflow/config";
+import { env } from "../../env";
 
 export const SecurityUtils = {
   hashPassword: async (password: string) => {

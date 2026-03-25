@@ -7,7 +7,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dataflow/config": ["packages/config/src/*"],
+      "@dataflow/config": ["packages/config/src/index.ts"],
+      "@dataflow/config/*": ["packages/config/src/*"],
       "@dataflow/database": ["packages/database/src/*"],
       "@dataflow/types": ["packages/types/src/*"],
       "@dataflow/logger": ["packages/logger/src/*"],

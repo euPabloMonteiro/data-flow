@@ -1,18 +1,21 @@
 import pino from "pino";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+type LoggerConfig = {
+  nodeEnv: string;
+  logLevel: string;
+};
 
-export const createLogger = (serviceName: string) => {
+export const createLogger = (serviceName: string, config: LoggerConfig) => {
+  const isDevelopment = config.nodeEnv === "development";
+
   return pino({
     name: serviceName,
-    level: process.env.LOG_LEVEL || "info",
+    level: config.logLevel,
     transport: isDevelopment
       ? {
           target: "pino-pretty",
           options: {
             colorize: true,
-            // ignore: "pid,hostname",
-            // translateTime: "HH:MM:ss Z",
           },
         }
       : undefined,

@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@dataflow/config": "workspace:*",
     "@dataflow/types": "workspace:*",
     "@hookform/resolvers": "^3.10.0",
     "@tailwindcss/postcss": "^4.2.2",
@@ -35,6 +34,8 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "postcss": "^8",

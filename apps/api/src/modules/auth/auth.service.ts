@@ -1,8 +1,8 @@
 import axios from "axios";
-import { env } from "@dataflow/config";
 import { AuthRepository } from "./auth.repository";
 import { SecurityUtils } from "../../common/utils/security";
 import { AppError } from "../../errors/AppError";
+import { env } from "../../env";
 
 export class AuthService {
   constructor(private authRepository = new AuthRepository()) {}

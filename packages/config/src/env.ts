@@ -1,46 +1,36 @@
-import dotenv from "dotenv";
-import path from "path";
 import { z } from "zod";
 
-dotenv.config({
-  path: path.resolve(__dirname, "../../../.env"),
+export const baseEnvSchema = z.object({
+  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  LOG_LEVEL: z.string().default("info"),
 });
 
-const envSchema = z.object({
+export const databaseEnvSchema = z.object({
+  DATABASE_URL: z.string(),
+});
+
+export const redisEnvSchema = z.object({
   REDIS_HOST: z.string().default("localhost"),
   REDIS_PORT: z.coerce.number().default(6379),
+});
 
-  DATABASE_URL: z.string(),
+export const serverEnvSchema = z.object({
   PORT: z.coerce.number().default(3333),
-  LOG_LEVEL: z.string().default("info"),
+});
 
-  NODE_ENV: z
-    .enum(["development", "test", "production"])
-    .default("development"),
-
+export const oauthEnvSchema = z.object({
   GITHUB_CLIENT_ID: z.string(),
   GITHUB_CLIENT_SECRET: z.string(),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
   GOOGLE_REDIRECT_URI_CALLBACK: z.string().url(),
+});
 
+export const authEnvSchema = z.object({
   AUTH_REDIRECT_URL: z.string().url(),
+});
 
+export const jwtEnvSchema = z.object({
   JWT_PRIVATE_KEY: z.string().transform((val) => val.replace(/\\n/g, "\n")),
   JWT_PUBLIC_KEY: z.string().transform((val) => val.replace(/\\n/g, "\n")),
 });
-
-export function validateEnv() {
-  const result = envSchema.safeParse(process.env);
-
-  if (!result.success) {
-    const errors = result.error.format();
-    console.error("❌ Invalid environment variables:");
-    console.error(JSON.stringify(errors, null, 2));
-    throw new Error("Failed to validate environment variables");
-  }
-
-  return result.data;
-}
-
-export const env = validateEnv();

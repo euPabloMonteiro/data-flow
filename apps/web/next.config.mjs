@@ -4,7 +4,7 @@ const nextConfig = {
   experimental: {
     typedRoutes: true,
   },
-  transpilePackages: ["@dataflow/types", "@dataflow/config"],
+  transpilePackages: ["@dataflow/types"],
 };
 
 export default nextConfig;
