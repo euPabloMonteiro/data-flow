@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@dataflow/config";
 
 export const saleSchema = z.object({
   date: z.string().datetime(),

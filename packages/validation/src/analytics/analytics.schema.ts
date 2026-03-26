@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@dataflow/config";
 
 export const revenueByCountrySchema = z.object({
   country: z.string(),

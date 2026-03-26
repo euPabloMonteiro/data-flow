@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUploadService, GetUploadService } from "./upload.service";
 import { UploadPresenter } from "./upload.presenter";
-import { z } from "zod";
+import { z } from "@dataflow/config";
 
 const uuidSchema = z.string().uuid();
 
