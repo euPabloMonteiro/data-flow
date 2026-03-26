@@ -28,7 +28,7 @@ const features = [
 
 const LoginPage = () => {
   return (
-    <main className="relative min-h-screen flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
+    <main className="relative min-h-screen flex flex-col lg:flex-row overflow-y-auto">
       <AuthBackground />
 
       {/* Left panel — Branding (hidden on mobile) */}
@@ -36,7 +36,7 @@ const LoginPage = () => {
         initial={{ opacity: 0, x: -40 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="hidden lg:flex w-1/2 flex-col justify-between p-12 xl:p-16 z-10"
+        className="hidden lg:flex w-1/2 flex-col justify-between p-10 xl:p-16 z-10 min-h-screen"
       >
         <div>
           {/* Back link */}
@@ -105,13 +105,13 @@ const LoginPage = () => {
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-        className="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12 z-10"
+        className="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12 z-10 py-8 lg:py-12"
       >
         {/* Mobile only: back link + logo */}
-        <div className="lg:hidden w-full max-w-[450px] mb-8">
+        <div className="lg:hidden w-full max-w-[450px] mb-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-df-muted hover:text-df-white transition-colors text-sm mb-6"
+            className="inline-flex items-center gap-2 text-df-muted hover:text-df-white transition-colors text-sm mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar

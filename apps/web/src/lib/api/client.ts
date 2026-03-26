@@ -9,13 +9,16 @@ export const api = axios.create({
   },
 });
 
+let isRedirecting = false;
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && !isRedirecting) {
       if (typeof window !== "undefined") {
         if (!window.location.pathname.includes("/login")) {
-          window.location.href = "/login?session_expired=true";
+          isRedirecting = true;
+          window.location.replace("/login?session_expired=true");
         }
       }
     }

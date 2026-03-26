@@ -8,8 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useMemo } from "react";
 import { Loader2, Mail, Lock, Eye, EyeOff, User } from "lucide-react";
-import { FaGithub, FaGoogle } from "react-icons/fa";
-import { loginWithGithub, loginWithGoogle } from "@/app/actions/auth";
+import { OAuthButtons } from "./oauth-buttons";
 
 const registerSchema = z
   .object({
@@ -50,9 +49,7 @@ const strengthColors = [
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  
-  const [isLoadingGithub, setIsLoadingGithub] = useState(false);
-  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
+  const [isOAuthLoading, setIsOAuthLoading] = useState(false);
 
   const {
     register,
@@ -60,8 +57,7 @@ export function RegisterForm() {
     watch,
     formState: { errors },
   } = useForm<RegisterFormValues>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(registerSchema) as any,
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -80,17 +76,7 @@ export function RegisterForm() {
     setIsLoading(false);
   }
 
-  const handleGithubLogin = async () => {
-    setIsLoadingGithub(true);
-    await loginWithGithub();
-  };
-
-  const handleGoogleLogin = async () => {
-    setIsLoadingGoogle(true);
-    await loginWithGoogle();
-  };
-
-  const isFormDisabled = isLoading || isLoadingGithub || isLoadingGoogle;
+  const isFormDisabled = isLoading || isOAuthLoading;
 
   return (
     <div className="space-y-4 pt-6">
@@ -229,46 +215,11 @@ export function RegisterForm() {
         </Button>
       </form>
 
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-df-surface/40"></div>
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-df-bg-secondary px-2 text-df-muted">Ou</span>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full h-11 bg-df-bg-secondary border-df-surface/40 text-df-white hover:bg-df-surface/20 transition-all cursor-pointer"
-          onClick={handleGithubLogin}
-          disabled={isFormDisabled}
-        >
-          {isLoadingGithub ? (
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-          ) : (
-            <FaGithub className="mr-2 h-5 w-5" />
-          )}
-          Criar conta com GitHub
-        </Button>
-
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full h-11 bg-df-bg-secondary border-df-surface/40 text-df-white hover:bg-df-surface/20 transition-all cursor-pointer"
-          onClick={handleGoogleLogin}
-          disabled={isFormDisabled}
-        >
-          {isLoadingGoogle ? (
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-          ) : (
-            <FaGoogle className="mr-2 h-5 w-5 text-red-500" />
-          )}
-          Criar conta com Google
-        </Button>
-      </div>
+      <OAuthButtons
+        label="Criar conta"
+        disabled={isLoading}
+        onLoadingChange={setIsOAuthLoading}
+      />
     </div>
   );
 }

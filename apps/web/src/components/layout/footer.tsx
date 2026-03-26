@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import { LuDatabaseZap } from "react-icons/lu";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
@@ -16,7 +13,7 @@ const techStack = [
   "Turborepo",
 ];
 
-const Footer = () => {
+export default function Footer() {
   return (
     <footer className="w-full px-4 sm:px-6 bg-df-bg-deep border-t border-df-surface/20 pt-16 pb-8">
       <div className="w-full max-w-7xl mx-auto">
@@ -59,21 +56,25 @@ const Footer = () => {
               Navegação
             </h4>
             <nav className="flex flex-col gap-2.5">
-              {["Home", "Como Funciona", "Arquitetura", "Dashboard"].map(
-                (item) => (
-                  <a
-                    key={item}
-                    href={
-                      item === "Dashboard"
-                        ? "/dashboard"
-                        : `#${item.toLowerCase().replace(/ /g, "-")}`
-                    }
-                    className="text-df-muted text-sm hover:text-df-accent-light transition-colors"
-                  >
-                    {item}
-                  </a>
-                )
-              )}
+              {[
+                "Home",
+                "Como Funciona",
+                "Arquitetura",
+                "Segurança",
+                "Dashboard",
+              ].map((item) => (
+                <a
+                  key={item}
+                  href={
+                    item === "Dashboard"
+                      ? "/dashboard"
+                      : `#${item.toLowerCase().replace(/ /g, "-")}`
+                  }
+                  className="text-df-muted text-sm hover:text-df-accent-light transition-colors"
+                >
+                  {item}
+                </a>
+              ))}
             </nav>
           </div>
 
@@ -116,6 +117,4 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

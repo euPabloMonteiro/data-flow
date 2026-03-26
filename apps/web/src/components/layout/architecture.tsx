@@ -112,7 +112,7 @@ const Architecture = () => {
               {data.map((item, index) => (
                 <div
                   key={`${set}-${index}`}
-                  className={`group relative shrink-0 w-[300px] sm:w-[420px] bg-df-bg-secondary rounded-4xl border border-df-surface/30 p-8 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${item.glowColor} hover:border-df-surface/50`}
+                  className={`group relative shrink-0 w-[260px] sm:w-[320px] lg:w-[420px] bg-df-bg-secondary rounded-4xl border border-df-surface/30 p-6 sm:p-8 flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${item.glowColor} hover:border-df-surface/50`}
                 >
                   <div className="flex flex-col gap-6 mb-6">
                     <div

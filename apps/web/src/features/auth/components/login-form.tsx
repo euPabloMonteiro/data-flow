@@ -9,8 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { FaGithub, FaGoogle } from "react-icons/fa";
-import { loginWithGithub, loginWithGoogle } from "@/app/actions/auth";
+import { OAuthButtons } from "./oauth-buttons";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Insira um e-mail válido" }),
@@ -25,17 +24,14 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  
-  const [isLoadingGithub, setIsLoadingGithub] = useState(false);
-  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
+  const [isOAuthLoading, setIsOAuthLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(loginSchema) as any,
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -50,17 +46,7 @@ export function LoginForm() {
     setIsLoading(false);
   }
 
-  const handleGithubLogin = async () => {
-    setIsLoadingGithub(true);
-    await loginWithGithub();
-  };
-
-  const handleGoogleLogin = async () => {
-    setIsLoadingGoogle(true);
-    await loginWithGoogle();
-  };
-
-  const isFormDisabled = isLoading || isLoadingGithub || isLoadingGoogle;
+  const isFormDisabled = isLoading || isOAuthLoading;
 
   return (
     <div className="space-y-4 pt-6">
@@ -148,46 +134,11 @@ export function LoginForm() {
         </Button>
       </form>
 
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-df-surface/40"></div>
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-df-bg-secondary px-2 text-df-muted">Ou</span>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full h-11 bg-df-bg-secondary border-df-surface/40 text-df-white hover:bg-df-surface/20 transition-all cursor-pointer"
-          onClick={handleGithubLogin}
-          disabled={isFormDisabled}
-        >
-          {isLoadingGithub ? (
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-          ) : (
-            <FaGithub className="mr-2 h-5 w-5" />
-          )}
-          Continuar com GitHub
-        </Button>
-
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full h-11 bg-df-bg-secondary border-df-surface/40 text-df-white hover:bg-df-surface/20 transition-all cursor-pointer"
-          onClick={handleGoogleLogin}
-          disabled={isFormDisabled}
-        >
-          {isLoadingGoogle ? (
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-          ) : (
-            <FaGoogle className="mr-2 h-5 w-5 text-red-500" />
-          )}
-          Continuar com Google
-        </Button>
-      </div>
+      <OAuthButtons
+        label="Continuar"
+        disabled={isLoading}
+        onLoadingChange={setIsOAuthLoading}
+      />
     </div>
   );
 }

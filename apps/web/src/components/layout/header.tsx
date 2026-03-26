@@ -64,11 +64,11 @@ const Header = () => {
         {/* Title */}
         <motion.h1
           variants={fadeUpVariants}
-          className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-df-white leading-[1.1]"
+          className="text-3xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-df-white leading-[1.1]"
         >
           Processe grandes volumes
-          <br />
-          de dados sem{" "}
+          <br className="hidden sm:block" />
+          {" "}de dados sem{" "}
           <span className="bg-linear-to-b from-df-accent to-df-accent-violet bg-clip-text text-transparent">
             travar seu sistema.
           </span>
@@ -87,22 +87,22 @@ const Header = () => {
         {/* CTA buttons */}
         <motion.div
           variants={fadeUpVariants}
-          className="mt-10 flex flex-col sm:flex-row items-center gap-4"
+          className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto"
         >
-          <Link href="/dashboard">
+          <Link href="/dashboard" className="w-full sm:w-auto">
             <Button
               size="lg"
-              className="bg-df-accent hover:bg-df-accent-hover text-white px-8 py-6 rounded-full text-base font-semibold cursor-pointer transition-all hover:shadow-xl hover:shadow-df-accent/25 hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full sm:w-auto bg-df-accent hover:bg-df-accent-hover text-white px-8 py-6 rounded-full text-base font-semibold cursor-pointer transition-all hover:shadow-xl hover:shadow-df-accent/25 hover:scale-[1.02] active:scale-[0.98]"
             >
               Acessar Dashboard
               <MoveRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
-          <a href="#architecture">
+          <a href="#architecture" className="w-full sm:w-auto">
             <Button
               variant="outline"
               size="lg"
-              className="bg-white/80 backdrop-blur-sm border-df-muted/20 text-df-light-text px-8 py-6 rounded-full text-base font-medium cursor-pointer hover:bg-white hover:border-df-accent/30 transition-all"
+              className="w-full sm:w-auto bg-white/80 backdrop-blur-sm border-df-muted/20 text-df-light-text px-8 py-6 rounded-full text-base font-medium cursor-pointer hover:bg-white hover:border-df-accent/30 transition-all"
             >
               Ver Arquitetura
               <CodeXml className="ml-2 w-5 h-5" />

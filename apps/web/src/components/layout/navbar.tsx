@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { LuDatabaseZap } from "react-icons/lu";
 import { Button } from "../ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "../ui/sheet";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
@@ -11,6 +11,7 @@ import { Menu } from "lucide-react";
 const navLinks = [
   { label: "Home", href: "#home" },
   { label: "Como Funciona", href: "#how-it-works" },
+  { label: "Segurança", href: "#security" },
   { label: "Arquitetura", href: "#architecture" },
 ];
 
@@ -31,7 +32,7 @@ const Navbar = () => {
           }
         });
       },
-      { rootMargin: "-50% 0px -50% 0px" }
+      { rootMargin: "-50% 0px -50% 0px" },
     );
 
     const sections = document.querySelectorAll("section[id], header[id]");
@@ -50,9 +51,7 @@ const Navbar = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`w-full min-h-[66px] py-3 flex items-center sticky top-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "glass-light shadow-lg shadow-df-accent/5"
-          : "bg-transparent"
+        scrolled ? "glass-light shadow-lg shadow-df-accent/5" : "bg-transparent"
       }`}
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
@@ -120,7 +119,15 @@ const Navbar = () => {
               <Menu className="w-5 h-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] bg-df-light-bg border-df-text/10">
+          <SheetContent
+            side="right"
+            className="w-[300px] bg-df-light-bg border-df-text/10"
+          >
+            <SheetHeader className="sr-only">
+              <SheetTitle>Navegação</SheetTitle>
+              <SheetDescription>Menu de navegação principal do DataFlow</SheetDescription>
+            </SheetHeader>
+
             <div className="flex flex-col gap-6 mt-8">
               <div className="flex items-center gap-2.5 px-2">
                 <LuDatabaseZap className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5" />
@@ -147,10 +154,7 @@ const Navbar = () => {
 
               <div className="flex flex-col gap-3 px-2 pt-4 border-t border-df-text/10">
                 <Link href="/login">
-                  <Button
-                    variant="outline"
-                    className="w-full cursor-pointer"
-                  >
+                  <Button variant="outline" className="w-full cursor-pointer">
                     Login
                   </Button>
                 </Link>

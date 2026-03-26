@@ -45,7 +45,14 @@ export function UploadModal() {
     e.preventDefault();
     setIsDragging(false);
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile?.name.endsWith(".csv")) {
+    if (!droppedFile) return;
+
+    const isValidExtension = droppedFile.name.toLowerCase().endsWith(".csv");
+    const isValidMime =
+      droppedFile.type === "text/csv" ||
+      droppedFile.type === "application/vnd.ms-excel";
+
+    if (isValidExtension && isValidMime) {
       setFile(droppedFile);
     } else {
       toast.error("Apenas arquivos CSV são aceitos.");
@@ -95,7 +102,7 @@ export function UploadModal() {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-full sm:w-[450px] bg-df-bg-primary border-l border-df-surface/20 px-4"
+        className="w-[85vw] sm:w-[450px] bg-df-bg-primary border-l border-df-surface/20 px-4"
       >
         <SheetHeader className="mb-6">
           <SheetTitle className="text-df-white text-lg">

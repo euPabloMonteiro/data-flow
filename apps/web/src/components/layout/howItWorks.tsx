@@ -69,7 +69,7 @@ const HowItWorks = () => {
       id="how-it-works"
       className="relative py-24 sm:py-32 bg-df-light-bg overflow-hidden"
     >
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -94,16 +94,16 @@ const HowItWorks = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch"
         >
           {data.map((item, index) => (
             <motion.div
               key={index}
               variants={cardVariants}
-              className={`group relative bg-white border border-df-muted/15 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-df-accent/5 hover:-translate-y-1 ${item.borderColor}`}
+              className={`group relative bg-white border border-df-muted/15 rounded-2xl p-6 flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-df-accent/5 hover:-translate-y-1 ${item.borderColor}`}
             >
               {/* Step number */}
-              <div className="absolute top-4 right-4 text-5xl font-black text-df-muted/30 select-none">
+              <div className="absolute top-3 right-4 text-4xl font-black text-df-muted/20 select-none">
                 {item.step}
               </div>
 
@@ -118,14 +118,9 @@ const HowItWorks = () => {
               <h3 className="text-df-light-text font-bold text-lg mb-2">
                 {item.title}
               </h3>
-              <p className="text-df-light-muted text-sm leading-relaxed">
+              <p className="text-df-light-muted text-sm leading-relaxed flex-1">
                 {item.description}
               </p>
-
-              {/* Connector line for desktop */}
-              {index < data.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-px bg-linear-to-r from-df-muted/30 to-transparent" />
-              )}
             </motion.div>
           ))}
         </motion.div>
