@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   Sheet,
   SheetContent,
@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Upload, FileUp, X, CheckCircle2 } from "lucide-react";
+import { Upload, FileUp, X, CheckCircle2, AlertTriangle } from "lucide-react";
 import { createUpload } from "@/services/upload/create-upload";
 import { useUpload } from "@/features/upload/hooks/use-upload";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,6 +30,18 @@ export function UploadModal() {
   const percentage = uploadData?.progress?.percentage ?? 0;
   const isCompleted = uploadData?.status === "COMPLETED";
   const isFailed = uploadData?.status === "FAILED";
+  const hasErrors =
+    (uploadData?.progress?.errorRows ?? 0) > 0 && isCompleted;
+
+  const analyticsInvalidated = useRef(false);
+
+  useEffect(() => {
+    if ((isCompleted || isFailed) && !analyticsInvalidated.current) {
+      analyticsInvalidated.current = true;
+      queryClient.invalidateQueries({ queryKey: ["analytics"] });
+      queryClient.invalidateQueries({ queryKey: ["uploads"] });
+    }
+  }, [isCompleted, isFailed, queryClient]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -84,6 +96,7 @@ export function UploadModal() {
     setFile(null);
     setUploadId(null);
     setIsUploading(false);
+    analyticsInvalidated.current = false;
     queryClient.invalidateQueries({ queryKey: ["uploads"] });
   };
 
@@ -222,15 +235,32 @@ export function UploadModal() {
                 <div className="rounded-xl bg-df-bg-secondary border border-df-surface/20 p-6 text-center">
                   {isCompleted ? (
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 rounded-full bg-df-success/10 flex items-center justify-center">
-                        <CheckCircle2 className="w-8 h-8 text-df-success" />
+                      <div
+                        className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                          hasErrors ? "bg-df-warning/10" : "bg-df-success/10"
+                        }`}
+                      >
+                        {hasErrors ? (
+                          <AlertTriangle className="w-8 h-8 text-df-warning" />
+                        ) : (
+                          <CheckCircle2 className="w-8 h-8 text-df-success" />
+                        )}
                       </div>
                       <p className="text-df-white font-semibold">
-                        Processamento concluído!
+                        {hasErrors
+                          ? "Concluído com erros"
+                          : "Processamento concluído!"}
                       </p>
-                      <p className="text-df-muted text-sm">
-                        {uploadData?.progress.processedRows} linhas processadas
-                      </p>
+                      <div className="flex items-center gap-3 text-sm">
+                        <span className="text-df-success">
+                          {uploadData?.progress.successRows ?? 0} importados
+                        </span>
+                        {(uploadData?.progress.errorRows ?? 0) > 0 && (
+                          <span className="text-df-error">
+                            {uploadData?.progress.errorRows} com erro
+                          </span>
+                        )}
+                      </div>
                     </div>
                   ) : isFailed ? (
                     <div className="flex flex-col items-center gap-3">
@@ -240,9 +270,18 @@ export function UploadModal() {
                       <p className="text-df-white font-semibold">
                         Processamento falhou
                       </p>
-                      <p className="text-df-muted text-sm">
-                        Verifique o arquivo e tente novamente
-                      </p>
+                      {uploadData?.progress.totalRows != null &&
+                      uploadData.progress.totalRows > 0 ? (
+                        <p className="text-df-muted text-sm">
+                          {uploadData.progress.errorRows ?? 0} de{" "}
+                          {uploadData.progress.totalRows} linhas inválidas.
+                          Verifique o formato do arquivo.
+                        </p>
+                      ) : (
+                        <p className="text-df-muted text-sm">
+                          Verifique o arquivo e tente novamente
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <div className="space-y-4">

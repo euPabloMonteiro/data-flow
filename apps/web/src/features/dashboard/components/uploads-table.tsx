@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   XCircle,
   Loader2,
+  AlertTriangle,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -110,6 +111,24 @@ export function UploadsTable({ data, isLoading }: UploadsTableProps) {
                     <p className="text-df-muted text-xs">
                       {formatDate(upload.createdAt)}
                     </p>
+                    {(upload.status === "COMPLETED" || upload.status === "FAILED") &&
+                      upload.progress?.totalRows != null && (
+                        <div className="flex items-center gap-2 mt-1">
+                          {upload.progress.successRows != null &&
+                            upload.progress.successRows > 0 && (
+                              <span className="text-df-success text-xs">
+                                {upload.progress.successRows} importados
+                              </span>
+                            )}
+                          {upload.progress.errorRows != null &&
+                            upload.progress.errorRows > 0 && (
+                              <span className="text-df-error text-xs flex items-center gap-0.5">
+                                <AlertTriangle className="w-3 h-3" />
+                                {upload.progress.errorRows} com erro
+                              </span>
+                            )}
+                        </div>
+                      )}
                     {upload.status === "PROCESSING" && (
                       <Progress
                         value={percentage}
