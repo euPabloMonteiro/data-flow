@@ -1,4 +1,15 @@
-import { Response } from "express";
+import {
+  Controller,
+  Route,
+  Get,
+  Post,
+  Path,
+  Security,
+  Request,
+  Response,
+  SuccessResponse,
+  Middlewares,
+} from "tsoa";
 import {
   CreateUploadService,
   GetUploadService,
@@ -6,57 +17,61 @@ import {
 } from "./upload.service";
 import { UploadPresenter } from "./upload.presenter";
 import { AuthenticatedRequest } from "../../middleware/auth.middleware";
-import { z } from "@dataflow/config";
+import { upload } from "../../lib/multer";
+import type {
+  CreateUploadResponse,
+  UploadResponseDTO,
+  UploadErrorsResponseDTO,
+} from "./upload.models";
 
-const uuidSchema = z.string().uuid();
-
-export class UploadController {
-  constructor(
-    private createService = new CreateUploadService(),
-    private getService = new GetUploadService(),
-    private getErrorsService = new GetUploadErrorsService(),
-  ) {}
-
-  create = async (req: AuthenticatedRequest, res: Response) => {
+@Route("uploads")
+@Security("jwt")
+export class UploadController extends Controller {
+  @SuccessResponse("201", "Upload created")
+  @Response("400", "Bad request - file required")
+  @Post("/")
+  @Middlewares(upload.single("file"))
+  async create(
+    @Request() req: AuthenticatedRequest,
+  ): Promise<CreateUploadResponse> {
     if (!req.file) {
-      return res.status(400).json({ error: "file is required" });
+      throw { status: 400, message: "file is required" };
     }
 
     const userId = req.user.sub;
-    const result = await this.createService.execute(req.file, userId);
-    return res.status(201).json(result);
-  };
+    return await new CreateUploadService().execute(req.file, userId);
+  }
 
-  getById = async (req: AuthenticatedRequest, res: Response) => {
-    const { id } = req.params;
-    const parsed = uuidSchema.safeParse(id);
-
-    if (!parsed.success) {
-      return res.status(400).json({ error: "Invalid ID format" });
-    }
-
+  @Get("/")
+  async getAll(
+    @Request() req: AuthenticatedRequest,
+  ): Promise<UploadResponseDTO[]> {
     const userId = req.user.sub;
-    const upload = await this.getService.getById(parsed.data, userId);
-    return res.json(UploadPresenter.toHTTP(upload));
-  };
+    const uploads = await new GetUploadService().getAll(userId);
 
-  getErrors = async (req: AuthenticatedRequest, res: Response) => {
-    const { id } = req.params;
-    const parsed = uuidSchema.safeParse(id);
+    return UploadPresenter.toHTTPList(uploads);
+  }
 
-    if (!parsed.success) {
-      return res.status(400).json({ error: "Invalid ID format" });
-    }
-
+  @Get("/{id}")
+  @Response("400", "Invalid ID format")
+  @Response("404", "Upload not found")
+  async getById(
+    @Path() id: string,
+    @Request() req: AuthenticatedRequest,
+  ): Promise<UploadResponseDTO> {
     const userId = req.user.sub;
-    const errors = await this.getErrorsService.execute(parsed.data, userId);
-    return res.json(errors);
-  };
+    const upload = await new GetUploadService().getById(id, userId);
+    return UploadPresenter.toHTTP(upload);
+  }
 
-  getAll = async (req: AuthenticatedRequest, res: Response) => {
+  @Get("/{id}/errors")
+  @Response("400", "Invalid ID format")
+  @Response("404", "Upload not found")
+  async getErrors(
+    @Path() id: string,
+    @Request() req: AuthenticatedRequest,
+  ): Promise<UploadErrorsResponseDTO> {
     const userId = req.user.sub;
-    const uploads = await this.getService.getAll(userId);
-
-    return res.json(UploadPresenter.toHTTPList(uploads));
-  };
+    return await new GetUploadErrorsService().execute(id, userId);
+  }
 }

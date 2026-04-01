@@ -1,0 +1,23 @@
+{
+  "entryFile": "src/server.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/modules/**/*.controller.ts"],
+  "spec": {
+    "outputDirectory": "dist",
+    "specFileBaseName": "swagger",
+    "basePath": "/api",
+    "securityDefinitions": {
+      "jwt": {
+        "type": "apiKey",
+        "name": "auth_token",
+        "in": "cookie"
+      }
+    }
+  },
+  "routes": {
+    "basePath": "/api",
+    "routesDir": "src/generated",
+    "middleware": "express",
+    "authenticationModule": "./src/authentication.ts"
+  }
+}

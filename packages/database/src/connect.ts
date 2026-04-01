@@ -12,3 +12,7 @@ export async function connectDb() {
     throw error;
   }
 }
+
+export async function disconnectDb() {
+  await getPrisma().$disconnect();
+}

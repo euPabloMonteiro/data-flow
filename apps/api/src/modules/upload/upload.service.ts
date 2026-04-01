@@ -24,7 +24,7 @@ export class CreateUploadService {
 
     return {
       uploadId: upload.id,
-      jobId: job.id,
+      jobId: job.id as string,
     };
   }
 }

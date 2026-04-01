@@ -1,9 +1,11 @@
+import "reflect-metadata";
 import { errorMiddleware } from "./middleware/error.middleware";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { router } from "./routes";
+import swaggerUi from "swagger-ui-express";
+import { RegisterRoutes } from "./generated/routes";
 import { env } from "./env";
 
 const limiter = rateLimit({
@@ -26,7 +28,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(limiter);
 
-app.use("/api", router);
+// Swagger UI - Accesso em http://localhost:3333/api/docs
+const swaggerDocument = require("../dist/swagger.json");
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Rotas geradas pelo tsoa
+RegisterRoutes(app);
+
 app.use(errorMiddleware);
 
 export { app };

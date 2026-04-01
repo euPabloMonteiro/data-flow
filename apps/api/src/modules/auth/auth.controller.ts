@@ -1,13 +1,37 @@
-import { Request, Response } from "express";
+import {
+  Controller,
+  Route,
+  Get,
+  Post,
+  Query,
+  Security,
+  Request,
+  Response,
+} from "tsoa";
+import {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+} from "express";
 import { AuthService } from "./auth.service";
 import { AppError } from "../../errors/AppError";
 import { env } from "../../env";
+import { AuthenticatedRequest } from "../../middleware/auth.middleware";
 
-export class AuthController {
-  constructor(private authService = new AuthService()) {}
+interface MeResponse {
+  id: string;
+  email: string;
+  name: string | null;
+  avatarUrl: string | null;
+}
 
-  private setAuthCookie(res: Response, token: string) {
-    res.cookie("auth_token", token, {
+interface LogoutResponse {
+  message: string;
+}
+
+@Route("auth")
+export class AuthController extends Controller {
+  private setAuthCookie(res: ExpressResponse, name: string, value: string) {
+    res.cookie(name, value, {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
       sameSite: "lax",
@@ -16,44 +40,62 @@ export class AuthController {
     });
   }
 
-  async getMe(req: Request, res: Response) {
+  @Security("jwt")
+  @Get("/me")
+  @Response("404", "User not found")
+  async getMe(@Request() req: AuthenticatedRequest): Promise<MeResponse> {
     const userId = req.user?.sub;
     if (!userId) throw new AppError("User not found.", 404);
 
-    const user = await this.authService.getMe(userId);
-    return res.status(200).json(user);
+    return await new AuthService().getMe(userId);
   }
 
-  async githubCallback(req: Request, res: Response) {
-    const { code } = req.query;
-    if (!code) throw new AppError("Code not provided.", 400);
+  @Get("/github/callback")
+  async githubCallback(
+    @Query() code: string,
+    @Request() req: ExpressRequest,
+  ): Promise<void> {
+    this.setStatus(302);
 
     try {
-      const { token } = await this.authService.validateGithubUser(code as string);
-      this.setAuthCookie(res, token);
-      return res.redirect(`${env.AUTH_REDIRECT_URL}/dashboard`);
+      const { token } = await new AuthService().validateGithubUser(code);
+      this.setAuthCookie(req.res!, "auth_token", token);
+      this.setHeader("Location", `${env.AUTH_REDIRECT_URL}/dashboard`);
     } catch (error) {
-      const message = error instanceof AppError ? error.message : "Authentication failed";
-      return res.redirect(`${env.AUTH_REDIRECT_URL}/?auth_error=${encodeURIComponent(message)}`);
+      const message =
+        error instanceof AppError ? error.message : "Authentication failed";
+      this.setHeader(
+        "Location",
+        `${env.AUTH_REDIRECT_URL}/?auth_error=${encodeURIComponent(message)}`,
+      );
     }
   }
 
-  async googleCallback(req: Request, res: Response) {
-    const { code } = req.query;
+  @Get("/google/callback")
+  async googleCallback(
+    @Query() code: string,
+    @Request() req: ExpressRequest,
+  ): Promise<void> {
+    this.setStatus(302);
     if (!code) throw new AppError("Code not provided.", 400);
 
     try {
-      const { token } = await this.authService.validateGoogleUser(code as string);
-      this.setAuthCookie(res, token);
-      return res.redirect(`${env.AUTH_REDIRECT_URL}/dashboard`);
+      const { token } = await new AuthService().validateGoogleUser(code);
+      this.setAuthCookie(req.res!, "auth_token", token);
+      this.setHeader("Location", `${env.AUTH_REDIRECT_URL}/dashboard`);
     } catch (error) {
-      const message = error instanceof AppError ? error.message : "Authentication failed";
-      return res.redirect(`${env.AUTH_REDIRECT_URL}/?auth_error=${encodeURIComponent(message)}`);
+      const message =
+        error instanceof AppError ? error.message : "Authentication failed";
+      this.setHeader(
+        "Location",
+        `${env.AUTH_REDIRECT_URL}/?auth_error=${encodeURIComponent(message)}`,
+      );
     }
   }
 
-  async logout(_req: Request, res: Response) {
-    res.clearCookie("auth_token");
-    return res.status(200).json({ message: "Logged out successfully." });
+  @Post("/logout")
+  async logout(@Request() req: ExpressRequest): Promise<LogoutResponse> {
+    req.res?.clearCookie("auth_token");
+    return { message: "Logged out successfully." };
   }
 }

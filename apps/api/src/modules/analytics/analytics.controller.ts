@@ -1,13 +1,16 @@
-import { Response } from "express";
+import { Controller, Route, Get, Security, Request } from "tsoa";
 import { AnalyticsService } from "./analytics.service";
 import { AuthenticatedRequest } from "../../middleware/auth.middleware";
+import type { AnalyticsResponseDTO } from "@dataflow/types";
 
-export class AnalyticsController {
-  constructor(private service = new AnalyticsService()) {}
-
-  handle = async (req: AuthenticatedRequest, res: Response) => {
+@Route("analytics")
+@Security("jwt")
+export class AnalyticsController extends Controller {
+  @Get("/")
+  async handle(
+    @Request() req: AuthenticatedRequest,
+  ): Promise<AnalyticsResponseDTO> {
     const userId = req.user.sub;
-    const data = await this.service.execute(userId);
-    return res.json(data);
-  };
+    return await new AnalyticsService().execute(userId);
+  }
 }
